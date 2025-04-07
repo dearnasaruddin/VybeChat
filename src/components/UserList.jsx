@@ -1,14 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from 'react-icons/io';
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 const UserList = () => {
 
   const currentUserData = useSelector((state) => state.userInfo.value)
   const db = getDatabase();
   const [userList, setUserList] = useState([])
+  const [friendRequestList, setFriendRequestList] = useState([])
+
+  const handleFriendRequest = (targetedUserData) => {
+    set(push(ref(db, 'friendRequest/')), {
+      senderName: currentUserData.displayName,
+      senderEmail: currentUserData.email,
+      senderID: currentUserData.uid,
+      senderImg: currentUserData.photoURL,
+      receiverName: targetedUserData.name,
+      receiverEmail: targetedUserData.email,
+      receiverID: targetedUserData.id,
+      receiverImg: targetedUserData.profile_picture
+    }).then(() => {
+
+      toast.success('Request Sent successful!', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      })
+
+    }).catch((error) => {
+
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      })
+
+    })
+  }
 
   useEffect(() => {
 
@@ -19,7 +62,7 @@ const UserList = () => {
       snapshot.forEach((item) => {
 
         if (currentUserData.uid != item.key) {
-          arr.push(item.val())
+          arr.push({ ...item.val(), id: item.key })
           setUserList(arr)
         }
 
@@ -28,8 +71,36 @@ const UserList = () => {
   }, [])
 
 
+  useEffect(() => {
+
+    const userListRef = ref(db, 'friendRequest/');
+    onValue(userListRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach((item) => {
+        arr.push(item.val().senderID + item.val().receiverID)
+      })
+      setFriendRequestList(arr)
+    });
+
+  }, [])
+
+
+
   return (
     <div>
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <div className='flex justify-between items-center font-semibold text-xl px-6 text-black '>
         <h2>User List</h2>
         <BsThreeDots className='text-primary text-2xl' />
@@ -48,9 +119,17 @@ const UserList = () => {
               <div><h4 className='font-semibold text-sm'>{item.name}</h4>
                 <p className='font-medium text-xs text-[#4D4D4D75]'>{item.email}</p>
               </div>
-              <button className='bg-primary text-white p-2.5 rounded-lg cursor-pointer'>
-                <IoMdAdd className='text-xl' />
-              </button>
+              {
+                friendRequestList.includes(currentUserData.uid + item.id) ||
+                  friendRequestList.includes(item.id + currentUserData.uid) ?
+                  <button className='bg-gray-300 text-gray-500 p-2.5 rounded-lg cursor-not-allowed'>
+                    <IoMdAdd className='text-xl' />
+                  </button>
+                  :
+                  <button onClick={() => handleFriendRequest(item)} className='bg-primary text-white p-2.5 rounded-lg cursor-pointer'>
+                    <IoMdAdd className='text-xl' />
+                  </button>
+              }
             </div>
 
           </li>
@@ -59,6 +138,7 @@ const UserList = () => {
       </ul>
     </div>
   )
+
 }
 
 export default UserList
