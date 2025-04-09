@@ -72,7 +72,7 @@ const UserList = () => {
     });
   }, [])
 
-  
+
 
   useEffect(() => {
     const userListRef = ref(db, 'friendRequest/');
@@ -112,7 +112,7 @@ const UserList = () => {
     });
 
   }, [])
-  
+
 
 
   return (
@@ -134,41 +134,51 @@ const UserList = () => {
         <h2>User List</h2>
         <BsThreeDots className='text-primary text-2xl' />
       </div>
-      <ul className='mt-4 h-82 overflow-auto  mr-3'>
-        {/* Friend Item */}
+      <div className='h-82'>
+        {userList.length > 0 ?
+          <ul className='mt-4 h-full overflow-auto  mr-3'>
+            {/* Friend Item */}
 
-        {userList.map((item, index) => {
-          return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+            {userList.map((item, index) => {
+              return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
 
-            <div className='size-14 rounded-full overflow-hidden'>
-              <img src={item.profile_picture} alt="profileImg" />
-            </div>
+                <div className='size-14 rounded-full overflow-hidden'>
+                  <img src={item.profile_picture} alt="profileImg" />
+                </div>
 
-            <div className='grow flex justify-between items-center'>
-              <div><h4 className='font-semibold text-sm'>{item.name}</h4>
-                <p className='font-medium text-xs text-[#4D4D4D75]'>{item.email}</p>
-              </div>
-              {
-                friendList.includes(currentUserData.uid + item.id) ||
-                  friendList.includes(item.id + currentUserData.uid) ||
-                blockList.includes(currentUserData.uid + item.id) ||
-                  blockList.includes(item.id + currentUserData.uid) ||
-                friendRequestList.includes(currentUserData.uid + item.id) ||
-                  friendRequestList.includes(item.id + currentUserData.uid) ?
-                  <button className='bg-gray-300 text-gray-500 p-2.5 rounded-lg cursor-not-allowed'>
-                    <IoMdAdd className='text-xl' />
-                  </button>
-                  :
-                  <button onClick={() => handleFriendRequest(item)} className='bg-primary text-white p-2.5 rounded-lg cursor-pointer'>
-                    <IoMdAdd className='text-xl' />
-                  </button>
-              }
-            </div>
+                <div className='grow flex justify-between items-center'>
+                  <div><h4 className='font-semibold text-sm'>{item.name}</h4>
+                    <p className='font-medium text-xs text-[#4D4D4D75]'>{item.email}</p>
+                  </div>
+                  {
+                    friendList.includes(currentUserData.uid + item.id) ||
+                      friendList.includes(item.id + currentUserData.uid) ||
+                      blockList.includes(currentUserData.uid + item.id) ||
+                      blockList.includes(item.id + currentUserData.uid) ||
+                      friendRequestList.includes(currentUserData.uid + item.id) ||
+                      friendRequestList.includes(item.id + currentUserData.uid) ?
+                      <button className='bg-gray-300 text-gray-500 p-2.5 rounded-lg cursor-not-allowed'>
+                        <IoMdAdd className='text-xl' />
+                      </button>
+                      :
+                      <button onClick={() => handleFriendRequest(item)} className='bg-primary text-white p-2.5 rounded-lg cursor-pointer'>
+                        <IoMdAdd className='text-xl' />
+                      </button>
+                  }
+                </div>
 
-          </li>
+              </li>
 
-        })}
-      </ul>
+            })}
+          </ul>
+          :
+
+          <div className='text-gray-500 flex justify-center items-center h-full'>
+            <h2>No Friend is Available</h2>
+          </div>
+        }
+      </div>
+
     </div>
   )
 

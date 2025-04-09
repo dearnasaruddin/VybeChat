@@ -19,7 +19,9 @@ const FriendList = () => {
 
       set(push(ref(db, 'blockList/')), {
         blockByName: targetedUserData.senderName,
+        blockByEmail: targetedUserData.senderEmail,
         blockByID: targetedUserData.senderID,
+        blockByImg: targetedUserData.senderImg,
         blockedName: targetedUserData.receiverName,
         blockedEmail: targetedUserData.receiverEmail,
         blockedID: targetedUserData.receiverID,
@@ -34,7 +36,9 @@ const FriendList = () => {
 
       set(push(ref(db, 'blockList/')), {
         blockByName: targetedUserData.receiverName,
+        blockByEmail: targetedUserData.receiverEmail,
         blockByID: targetedUserData.receiverID,
+        blockByImg: targetedUserData.receiverImg,
         blockedName: targetedUserData.senderName,
         blockedEmail: targetedUserData.senderEmail,
         blockedID: targetedUserData.senderID,
@@ -60,7 +64,7 @@ const FriendList = () => {
       })
     });
 
-  },[])
+  }, [])
 
   return (
     <div>
@@ -68,49 +72,62 @@ const FriendList = () => {
         <h2>Friend List</h2>
         <BsThreeDots className='text-primary text-2xl' />
       </div>
-      <ul className='mt-4 h-82 overflow-auto  mr-3'>
-        {/* Friend Item */}
-        {friendList.map((item, index) => {
-          return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
 
-            <div className='size-14 rounded-full overflow-hidden'>
-              {currentUserData.uid === item?.senderID ?
-                <img src={item.receiverImg} alt="profileImg" />
-                :
-                <img src={item.senderImg} alt="profileImg" />
-              }
-            </div>
+      <div className='h-82'>
+        {friendList.length > 0 ?
 
-            <div className='grow flex justify-between relative'>
-              {currentUserData.uid === item?.senderID ?
-                <div>
-                  <h4 className='font-semibold text-sm'>{item.receiverName}</h4>
-                  <p className='font-medium text-xs text-[#4D4D4D75]'>{item.receiverEmail}</p>
+          <ul className='mt-4 h-full overflow-auto  mr-3'>
+            {/* Friend Item */}
+            {friendList.map((item, index) => {
+              return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+
+                <div className='size-14 rounded-full overflow-hidden'>
+                  {currentUserData.uid === item?.senderID ?
+                    <img src={item.receiverImg} alt="profileImg" />
+                    :
+                    <img src={item.senderImg} alt="profileImg" />
+                  }
                 </div>
-                :
-                <div>
-                  <h4 className='font-semibold text-sm'>{item.senderName}</h4>
-                  <p className='font-medium text-xs text-[#4D4D4D75]'>{item.senderEmail}</p>
+
+                <div className='grow flex justify-between relative'>
+                  {currentUserData.uid === item?.senderID ?
+                    <div>
+                      <h4 className='font-semibold text-sm'>{item.receiverName}</h4>
+                      <p className='font-medium text-xs text-[#4D4D4D75]'>{item.receiverEmail}</p>
+                    </div>
+                    :
+                    <div>
+                      <h4 className='font-semibold text-sm'>{item.senderName}</h4>
+                      <p className='font-medium text-xs text-[#4D4D4D75]'>{item.senderEmail}</p>
+                    </div>
+                  }
+
+                  <button className='cursor-pointer' onClick={() => setActiveUserOptionIndex(index)} >
+                    <BsThreeDots className='text-lg' />
+                  </button>
+                  {activeUserOptionIndex === index &&
+
+                    <ul onMouseLeave={() => setActiveUserOptionIndex(null)} className='bg-gray-400 w-1/2 absolute top-8 right-0 rounded-lg p-2 shadow-[2px_15px_25px_rgba(0,0,0,0.25)]'>
+                      <li onClick={() => handleBlock(item)} className='flex items-center text-lg text-white gap-x-3 px-3 py-1.5 rounded-md cursor-pointer hover:bg-black/50 duration-300'><MdBlock />Block</li>
+                    </ul>
+                  }
+
                 </div>
-              }
 
-              <button className='cursor-pointer' onClick={() => setActiveUserOptionIndex(index)} >
-                <BsThreeDots className='text-lg' />
-              </button>
-              {activeUserOptionIndex === index &&
+              </li>
 
-                <ul onMouseLeave={() => setActiveUserOptionIndex(null)} className='bg-gray-400 w-1/2 absolute top-8 right-0 rounded-lg p-2 shadow-[2px_15px_25px_rgba(0,0,0,0.25)]'>
-                  <li onClick={() => handleBlock(item)} className='flex items-center text-lg text-white gap-x-3 px-3 py-1.5 rounded-md cursor-pointer hover:bg-black/50 duration-300'><MdBlock />Block</li>
-                </ul>
-              }
+            })}
+          </ul>
 
-            </div>
+          :
 
-          </li>
+          <div className='text-gray-500 flex justify-center items-center h-full'>
+            <h2>No Friend is Available</h2>
+          </div>
+        }
+      </div>
 
-        })}
-      </ul>
-    </div>
+    </div >
   )
 }
 

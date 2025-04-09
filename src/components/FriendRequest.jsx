@@ -48,31 +48,42 @@ const FriendRequest = () => {
         <h2>Friend Requests</h2>
         <BsThreeDots className='text-primary text-2xl' />
       </div>
-      <ul className='mt-4 h-82 overflow-auto  mr-3'>
-        {/* Friend Item */}
+      <div className='h-82'>
 
-        {friendRequestList.map((item, index) => {
-          return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+        {friendRequestList.length > 0 ?
+          <ul className='mt-4 h-full overflow-auto  mr-3'>
+            {/* Friend Item */}
 
-            <div className='size-14 rounded-full overflow-hidden'>
-              <img src={item.senderImg} alt="profileImg" />
-            </div>
+            {friendRequestList.map((item, index) => {
+              return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
 
-            <div className='grow flex justify-between items-center'>
-              <div><h4 className='font-semibold text-sm'>{item.senderName}</h4>
-                <p className='font-medium text-xs text-[#4D4D4D75]'>{item.senderEmail}</p>
-              </div>
-              <div>
-                <button onClick={() => handleAcceptRequest(item)} type="button" className='font-medium bg-primary text-white px-3 py-1 rounded-md cursor-pointer'>Accept</button>
-                <button onClick={() => handleDeleteRequest(item)} type="button" className='font-medium bg-gray-400 text-white px-3 py-1 rounded-md ml-3 cursor-pointer'>Delete</button>
-              </div>
-            </div>
+                <div className='size-14 rounded-full overflow-hidden'>
+                  <img src={item.senderImg} alt="profileImg" />
+                </div>
+
+                <div className='grow flex justify-between items-center'>
+                  <div><h4 className='font-semibold text-sm'>{item.senderName}</h4>
+                    <p className='font-medium text-xs text-[#4D4D4D75]'>{item.senderEmail}</p>
+                  </div>
+                  <div>
+                    <button onClick={() => handleAcceptRequest(item)} type="button" className='font-medium bg-primary text-white px-3 py-1 rounded-md cursor-pointer'>Accept</button>
+                    <button onClick={() => handleDeleteRequest(item)} type="button" className='font-medium bg-gray-400 text-white px-3 py-1 rounded-md ml-3 cursor-pointer'>Delete</button>
+                  </div>
+                </div>
 
 
-          </li>
+              </li>
 
-        })}
-      </ul>
+            })}
+          </ul>
+
+          :
+
+          <div className='text-gray-500 flex justify-center items-center h-full'>
+            <h2>No Friend Request is Available</h2>
+          </div>
+        }
+      </div>
     </div>
   )
 }
