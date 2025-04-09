@@ -1,31 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from "react-icons/bs";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
 import { useSelector } from 'react-redux';
 
 
 const FriendRequest = () => {
 
+  const db = getDatabase();
   const currentUserData = useSelector((state) => state.userInfo.value)
   const [friendRequestList, setFriendRequestList] = useState([])
 
   useEffect(() => {
-    
-    const db = getDatabase();
     const userListRef = ref(db, 'friendRequest/');
     onValue(userListRef, (snapshot) => {
       let arr = []
       snapshot.forEach((item) => {
         if (currentUserData.uid === item.val().receiverID) {
-          arr.push(item.val())
+          arr.push({ ...item.val(), id: item.key })
         }
-        setFriendRequestList(arr)
       })
+      setFriendRequestList(arr)
 
     });
 
-
   }, [])
+
+  const handleAcceptRequest = (friendRequestData) => {
+    set(push(ref(db, 'friendList/')), {
+      ...friendRequestData
+    }).then(() => {
+      remove(ref(db, 'friendRequest/' + friendRequestData.id))
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  const handleDeleteRequest = (friendRequestData) => {
+    remove(ref(db, 'friendRequest/' + friendRequestData.id))
+
+  }
 
 
 
@@ -50,8 +63,8 @@ const FriendRequest = () => {
                 <p className='font-medium text-xs text-[#4D4D4D75]'>{item.senderEmail}</p>
               </div>
               <div>
-                <button type="button" className='font-medium bg-primary text-white px-3 py-1 rounded-md cursor-pointer'>Accept</button>
-                <button type="button" className='font-medium bg-gray-400 text-white px-3 py-1 rounded-md ml-3 cursor-pointer'>Delete</button>
+                <button onClick={() => handleAcceptRequest(item)} type="button" className='font-medium bg-primary text-white px-3 py-1 rounded-md cursor-pointer'>Accept</button>
+                <button onClick={() => handleDeleteRequest(item)} type="button" className='font-medium bg-gray-400 text-white px-3 py-1 rounded-md ml-3 cursor-pointer'>Delete</button>
               </div>
             </div>
 

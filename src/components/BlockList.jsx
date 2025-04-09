@@ -1,91 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from "react-icons/bs";
-
+import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
+import { useSelector } from 'react-redux';
 
 const BlockList = () => {
+  const db = getDatabase();
+  const currentUserData = useSelector((state) => state.userInfo.value)
+  const [blockList, setBlockList] = useState([])
 
-  const blockListData = [
-    {
-      name: "Raghav",
-      designation: "Sure!",
-      time: "Today, 8:56pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Kiran",
-      designation: "Hi.....",
-      time: "Today, 2:31pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Raghav",
-      designation: "Sure!",
-      time: "Today, 8:56pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Tejeshwini",
-      designation: "I will call him today.",
-      time: "Yesterday, 6:22pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Marvin McKinney",
-      designation: "Sure!",
-      time: "Today, 8:56pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Raghav",
-      designation: "Sure!",
-      time: "Yesterday, 6:22pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Swathi",
-      designation: "Dinner?",
-      time: "Today, 8:56pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Raghav",
-      designation: "Sure!",
-      time: "Yesterday, 6:22pm",
-      imgUrl: "https://picsum.photos/200",
-    },
-  ]
+  useEffect(() => {
+    const blockListRef = ref(db, 'blockList/');
+    onValue(blockListRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach((item) => {
 
-    return (
-        <div>
-            <div className='flex justify-between items-center font-semibold text-xl px-6 text-black '>
-                <h2>Block List</h2>
-                <BsThreeDots className='text-primary text-2xl' />
+        if (currentUserData.uid == item.val().blockByID) {
+          arr.push({ ...item.val(), id: item.key })
+        }
+
+      })
+      setBlockList(arr)
+
+    });
+
+  }, [])
+
+  return (
+    <div>
+      <div className='flex justify-between items-center font-semibold text-xl px-6 text-black '>
+        <h2>Block List</h2>
+        <BsThreeDots className='text-primary text-2xl' />
+      </div>
+      <ul className='mt-4 h-82 overflow-auto  mr-3'>
+        {/* Friend Item */}
+
+        {blockList.map((item, index) => {
+          return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+
+            <div className='size-14 rounded-full overflow-hidden'>
+              <img src={item.blockedImg} alt="profileImg" />
             </div>
-            <ul className='mt-4 h-82 overflow-auto  mr-3'>
-                {/* Friend Item */}
 
-                {blockListData.map((item, index) => {
-                    return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+            <div className='grow flex justify-between'>
+              <div><h4 className='font-semibold text-sm'>{item.blockedName}</h4>
+                <p className='font-medium text-xs text-[#4D4D4D75]'>{item.blockedEmail}</p>
+              </div>
+              <div>
+                <button className='font-medium text-white bg-primary px-3 py-0.5 rounded-md'>Unblock</button>
+              </div>
+            </div>
 
-                        <div className='size-14 rounded-full overflow-hidden'>
-                            <img src={item.imgUrl} alt="profileImg" />
-                        </div>
+          </li>
 
-                        <div className='grow flex justify-between'>
-                            <div><h4 className='font-semibold text-sm'>{item.name}</h4>
-                                <p className='font-medium text-xs text-[#4D4D4D75]'>{item.designation}</p>
-                            </div>
-                            <div>
-                                <button className='font-medium text-white bg-primary px-3 py-0.5 rounded-md'>Unblock</button>
-                            </div>
-                        </div>
-
-                    </li>
-
-                })}
-            </ul>
-        </div>
-    )
+        })}
+      </ul>
+    </div>
+  )
 }
 
 export default BlockList

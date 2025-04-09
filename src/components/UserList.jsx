@@ -11,6 +11,8 @@ const UserList = () => {
   const db = getDatabase();
   const [userList, setUserList] = useState([])
   const [friendRequestList, setFriendRequestList] = useState([])
+  const [friendList, setFriendList] = useState([])
+  const [blockList, setBlockList] = useState([])
 
   const handleFriendRequest = (targetedUserData) => {
     set(push(ref(db, 'friendRequest/')), {
@@ -70,9 +72,9 @@ const UserList = () => {
     });
   }, [])
 
+  
 
   useEffect(() => {
-
     const userListRef = ref(db, 'friendRequest/');
     onValue(userListRef, (snapshot) => {
       let arr = []
@@ -84,6 +86,33 @@ const UserList = () => {
 
   }, [])
 
+
+  useEffect(() => {
+    const userListRef = ref(db, 'friendList/');
+    onValue(userListRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach((item) => {
+        arr.push(item.val().senderID + item.val().receiverID)
+      })
+      setFriendList(arr)
+    });
+
+  }, [])
+
+
+
+  useEffect(() => {
+    const userListRef = ref(db, 'blockList/');
+    onValue(userListRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach((item) => {
+        arr.push(item.val().blockByID + item.val().blockedID)
+      })
+      setBlockList(arr)
+    });
+
+  }, [])
+  
 
 
   return (
@@ -120,6 +149,10 @@ const UserList = () => {
                 <p className='font-medium text-xs text-[#4D4D4D75]'>{item.email}</p>
               </div>
               {
+                friendList.includes(currentUserData.uid + item.id) ||
+                  friendList.includes(item.id + currentUserData.uid) ||
+                blockList.includes(currentUserData.uid + item.id) ||
+                  blockList.includes(item.id + currentUserData.uid) ||
                 friendRequestList.includes(currentUserData.uid + item.id) ||
                   friendRequestList.includes(item.id + currentUserData.uid) ?
                   <button className='bg-gray-300 text-gray-500 p-2.5 rounded-lg cursor-not-allowed'>

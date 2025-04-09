@@ -53,11 +53,11 @@ const GroupList = () => {
               <img src={item.imgUrl} alt="profileImg" />
             </div>
 
-            <div className='grow flex justify-between'>
+            <div className='grow flex justify-between items-center'>
               <div><h4 className='font-semibold text-sm'>{item.name}</h4>
                 <p className='font-medium text-xs text-[#4D4D4D75]'>{item.designation}</p>
               </div>
-              <button className='font-medium text-white bg-primary px-5 py-0.5 rounded-lg'>Join</button>
+              <button className='font-medium text-white bg-primary px-5 py-1 rounded-lg cursor-pointer'>Join</button>
             </div>
 
           </li>
