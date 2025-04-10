@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from 'react-icons/io';
 import { FiSearch } from "react-icons/fi";
@@ -16,6 +16,7 @@ const UserList = () => {
   const [friendRequestList, setFriendRequestList] = useState([])
   const [friendList, setFriendList] = useState([])
   const [blockList, setBlockList] = useState([])
+  const searchInput = useRef()
 
   const handleFriendRequest = (targetedUserData) => {
     set(push(ref(db, 'friendRequest/')), {
@@ -58,6 +59,10 @@ const UserList = () => {
     })
   }
 
+  const toggleActiveSearch = () => {
+    setActiveSearch(!activeSearch)
+    searchInput.current.focus()
+  }
   const handleSearch = (e) => {
     const searchResult = userList.filter((item) => item.name.toLowerCase().includes(e.target.value.toLowerCase()))
     setSearchUserList(searchResult)
@@ -141,8 +146,8 @@ const UserList = () => {
       <div className='flex justify-between items-center font-semibold text-xl px-6 text-black '>
         <h2 className='w-1/3'>User List</h2>
         <div className='flex items-center text-2xl text-primary gap-x-2 relative'>
-          <input onChange={handleSearch} className={`${activeSearch && 'w-60 py-1.5 px-3 border border-black/50'} w-0 p-0 text-base text-black placeholder-black/30 font-normal duration-300 absolute right-20 top-1/2 -translate-y-1/2`} placeholder='Search by Name' type="text" />
-          <span onClick={() => setActiveSearch(!activeSearch)} className={`${activeSearch && 'bg-primary !text-white'} p-1.5 duration-300 cursor-pointer`}>
+          <input ref={searchInput} onChange={handleSearch} className={`${activeSearch && 'w-60 py-1.5 px-3 border border-black/50'} w-0 p-0 text-base text-black placeholder-black/30 font-normal duration-300 absolute right-20 top-1/2 -translate-y-1/2`} placeholder='Search by Name' type="text" />
+          <span onClick={toggleActiveSearch} className={`${activeSearch && 'bg-primary !text-white'} p-1.5 duration-300 cursor-pointer`}>
             <FiSearch />
           </span>
           <BsThreeDots />
