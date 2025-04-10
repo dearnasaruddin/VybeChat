@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from 'react-icons/io';
+import { FiSearch } from "react-icons/fi";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from 'react-redux';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
@@ -10,6 +11,8 @@ const UserList = () => {
   const currentUserData = useSelector((state) => state.userInfo.value)
   const db = getDatabase();
   const [userList, setUserList] = useState([])
+  const [activeSearch, setActiveSearch] = useState(false)
+  const [searchUserList, setSearchUserList] = useState([])
   const [friendRequestList, setFriendRequestList] = useState([])
   const [friendList, setFriendList] = useState([])
   const [blockList, setBlockList] = useState([])
@@ -53,6 +56,11 @@ const UserList = () => {
       })
 
     })
+  }
+
+  const handleSearch = (e) => {
+    const searchResult = userList.filter((item) => item.name.toLowerCase().includes(e.target.value.toLowerCase()))
+    setSearchUserList(searchResult)
   }
 
   useEffect(() => {
@@ -131,15 +139,22 @@ const UserList = () => {
         transition={Bounce}
       />
       <div className='flex justify-between items-center font-semibold text-xl px-6 text-black '>
-        <h2>User List</h2>
-        <BsThreeDots className='text-primary text-2xl' />
+        <h2 className='w-1/3'>User List</h2>
+        <div className='flex items-center text-2xl text-primary gap-x-2 relative'>
+          <input onChange={handleSearch} className={`${activeSearch && 'w-60 py-1.5 px-3 border border-black/50'} w-0 p-0 text-base text-black placeholder-black/30 font-normal duration-300 absolute right-20 top-1/2 -translate-y-1/2`} placeholder='Search by Name' type="text" />
+          <span onClick={() => setActiveSearch(!activeSearch)} className={`${activeSearch && 'bg-primary !text-white'} p-1.5 duration-300 cursor-pointer`}>
+            <FiSearch />
+          </span>
+          <BsThreeDots />
+        </div>
       </div>
       <div className='h-82'>
-        {userList.length > 0 ?
+
+        {searchUserList.length > 0 ?
           <ul className='mt-4 h-full overflow-auto  mr-3'>
             {/* Friend Item */}
 
-            {userList.map((item, index) => {
+            {searchUserList.map((item, index) => {
               return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
 
                 <div className='size-14 rounded-full overflow-hidden'>
@@ -171,11 +186,51 @@ const UserList = () => {
 
             })}
           </ul>
+
           :
 
-          <div className='text-gray-500 flex justify-center items-center h-full'>
-            <h2>No Friend is Available</h2>
-          </div>
+          userList.length > 0 ?
+            <ul className='mt-4 h-full overflow-auto  mr-3'>
+              {/* Friend Item */}
+
+              {userList.map((item, index) => {
+                return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+
+                  <div className='size-14 rounded-full overflow-hidden'>
+                    <img src={item.profile_picture} alt="profileImg" />
+                  </div>
+
+                  <div className='grow flex justify-between items-center'>
+                    <div><h4 className='font-semibold text-sm'>{item.name}</h4>
+                      <p className='font-medium text-xs text-[#4D4D4D75]'>{item.email}</p>
+                    </div>
+                    {
+                      friendList.includes(currentUserData.uid + item.id) ||
+                        friendList.includes(item.id + currentUserData.uid) ||
+                        blockList.includes(currentUserData.uid + item.id) ||
+                        blockList.includes(item.id + currentUserData.uid) ||
+                        friendRequestList.includes(currentUserData.uid + item.id) ||
+                        friendRequestList.includes(item.id + currentUserData.uid) ?
+                        <button className='bg-gray-300 text-gray-500 p-2.5 rounded-lg cursor-not-allowed'>
+                          <IoMdAdd className='text-xl' />
+                        </button>
+                        :
+                        <button onClick={() => handleFriendRequest(item)} className='bg-primary text-white p-2.5 rounded-lg cursor-pointer'>
+                          <IoMdAdd className='text-xl' />
+                        </button>
+                    }
+                  </div>
+
+                </li>
+
+              })}
+            </ul>
+
+            :
+
+            <div className='text-gray-500 flex justify-center items-center h-full'>
+              <h2>No User is Available</h2>
+            </div>
         }
       </div>
 
