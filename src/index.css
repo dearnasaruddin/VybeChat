@@ -9,7 +9,7 @@
 
 @layer components {
     .activeMenu {
-        @apply before:content-[""] relative z-10 before:w-40 before:h-22 before:absolute before:left-6 before:top-1/2 before:-translate-y-1/2 before:-z-1 before:bg-white text-primary before:rounded-l-[20px] after:content-[""] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-22 after:w-2 after:rounded-l-3xl after:bg-primary after:shadow-[-2px_0px_4px_0px_#00000040]
+        @apply before:content-[""] relative z-10 before:w-24 xl:before:w-40 before:h-22 before:absolute before:left-3 xl:before:left-6 before:top-1/2 before:-translate-y-1/2 before:-z-1 before:bg-white text-primary before:rounded-l-[20px] after:content-[""] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-22 after:w-2 after:rounded-l-3xl after:bg-primary after:shadow-[-2px_0px_4px_0px_#00000040]
     }
 
 }

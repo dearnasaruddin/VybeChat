@@ -1,70 +1,74 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from "react-icons/bs";
-
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import Skeleton from './Skeleton';
 
 const GroupList = () => {
+  const auth = getAuth()
+  const db = getDatabase()
+  const [groupList, setGroupList] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const groupListData = [
-    {
-      name: "Friends Reunion",
-      designation: "Hi Guys, What's up?",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Friends Forever",
-      designation: "Good to see you.",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Crazy Cousins",
-      designation: "What plans today?",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Friends Reunion",
-      designation: "Hi Guys, What's up?",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Friends Forever",
-      designation: "Good to see you.",
-      imgUrl: "https://picsum.photos/200",
-    },
-    {
-      name: "Crazy Cousins",
-      designation: "What plans today?",
-      imgUrl: "https://picsum.photos/200",
-    },
+  useEffect(() => {
+    const groupListRef = ref(db, 'groupList/');
+    onValue(groupListRef, (snapshot) => {
+      let arr = []
+      snapshot.forEach((item) => {
+        if (auth.currentUser.uid != item.val().creatorID) {
+          arr.push({ ...item.val(), id: item.key })
+        }
+        setLoading(false)
+        setGroupList(arr)
+      })
+    });
 
-  ]
+  }, [])
   return (
     <div>
       <div className='flex justify-between items-center font-semibold text-xl px-6 text-black '>
         <h2>Group List</h2>
         <BsThreeDots className='text-primary text-2xl' />
       </div>
-      <ul className='mt-4 h-82 overflow-auto  mr-3'>
-        {/* Friend Item */}
 
-        {groupListData.map((item, index) => {
-          return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+      <div className='h-82'>
 
-            <div className='size-14 rounded-full overflow-hidden'>
-              <img src={item.imgUrl} alt="profileImg" />
-            </div>
+        {
+          loading ?
 
-            <div className='grow flex justify-between items-center'>
-              <div><h4 className='font-semibold text-sm'>{item.name}</h4>
-                <p className='font-medium text-xs text-[#4D4D4D75]'>{item.designation}</p>
+            <Skeleton />
+
+            :
+
+            groupList.length > 0 ?
+              <ul className='mt-4 h-full overflow-auto  mr-3'>
+                {/* Friend Item */}
+
+                {groupList.map((item, index) => {
+                  return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+
+                    <div className='size-14 rounded-full overflow-hidden'>
+                      <img src={item.groupImg} alt="groupImg" />
+                    </div>
+
+                    <div>
+                      <div><h4 className='font-semibold text-sm'>{item.groupName}</h4>
+                        <p className='font-medium text-xs text-[#4D4D4D75]'>{item.creatorName}</p>
+                      </div>
+                    </div>
+                    <button type="button" className='bg-primary text-white px-4 py-1 rounded-lg ml-auto cursor-pointer'>Join</button>
+                  </li>
+
+                })}
+              </ul>
+              :
+
+              <div className='text-gray-500 flex justify-center items-center h-full'>
+                <h2>No Group is Available</h2>
               </div>
-              <button className='font-medium text-white bg-primary px-5 py-1 rounded-lg cursor-pointer'>Join</button>
-            </div>
-
-          </li>
-
-        })}
-      </ul>
-    </div>
+        }
+      </div >
+    </div >
   )
 }
 

@@ -182,19 +182,7 @@ const Login = () => {
 
   return (
     <div className="flex h-screen justify-center items-center bg-[#f1f1f1]">
-      <ToastContainer
-        position="top-center"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Bounce}
-      />
+  
       <div className='h-200 w-320 flex justify-center items-center gap-x-28 bg-white pl-28 shadow-2xl'>
         <div className="font-poppins">
           <h1 className='font-bold text-4xl text-[#11175D] whitespace-nowrap'>Log in to your account!</h1>

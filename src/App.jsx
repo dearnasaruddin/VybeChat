@@ -5,11 +5,26 @@ import Registration from "./pages/Registration"
 import { BrowserRouter, Routes, Route } from "react-router";
 import Chat from "./pages/Chat";
 import RootLayout from "./components/RootLayout";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 function App() {
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
+
       <BrowserRouter>
         <Routes>
 

@@ -4,7 +4,7 @@ import Sidebar from './Sidebar'
 
 const RootLayout = () => {
   return (
-    <div className='flex gap-10'>
+    <div className='flex '>
         <Sidebar/>
         <Outlet/>
     </div>
