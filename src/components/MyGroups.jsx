@@ -6,7 +6,7 @@ import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import Skeleton from './Skeleton';
 
-const MyGroups = () => {
+const MyGroups = ({ optBtn, height, createGroupBtn }) => {
   const db = getDatabase()
   const auth = getAuth()
   const [createGroupModal, setCreateGroupModal] = useState(false)
@@ -61,7 +61,7 @@ const MyGroups = () => {
       <div className='flex justify-between items-center font-semibold text-xl px-6 text-black '>
         <h2>My Groups</h2>
         <div className='flex items-center gap-x-3 text-primary'>
-          <span onClick={handleActiveGroupModal} className={`text-2xl p-1 cursor-pointer ${createGroupModal && "bg-primary text-white"}`}>
+          <span onClick={handleActiveGroupModal} className={`text-2xl p-1 cursor-pointer ${createGroupBtn && createGroupBtn}  ${createGroupModal && "bg-primary text-white"}`}>
             <IoMdAdd />
           </span>
           <BsThreeDots className=' text-2xl' />
@@ -71,7 +71,7 @@ const MyGroups = () => {
 
 
 
-      <div className='h-82'>
+      <div className={height ? height : "h-82"}>
         {loading ?
 
           <Skeleton />
@@ -98,7 +98,7 @@ const MyGroups = () => {
                 {/* Friend Item */}
 
                 {groupList.map((item, index) => {
-                  return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+                  return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6 cursor-default'>
 
                     <div className='size-14 rounded-full overflow-hidden'>
                       <img src={item.groupImg} alt="groupImg" />
@@ -109,7 +109,7 @@ const MyGroups = () => {
                         <p className='font-medium text-xs text-[#4D4D4D75]'>{item.creatorName}</p>
                       </div>
                     </div>
-                    <button className='cursor-pointer text-lg ml-auto' >
+                    <button className={`cursor-pointer text-lg ml-auto ${optBtn}`} >
                       <BsThreeDots />
                     </button>
                   </li>

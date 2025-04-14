@@ -1,5 +1,4 @@
 import React from 'react'
-import Sidebar from '../components/Sidebar'
 import FriendList from '../components/FriendList';
 import MyGroups from '../components/MyGroups';
 import FriendRequest from '../components/FriendRequest';
@@ -13,7 +12,7 @@ const Home = () => {
 
   return (
     // <div className='w-full h-screen py-9 pr-8 gap-5 flex flex-wrap justify-between content-between font-poppins'>
-    <div className='w-full h-screen py-9 pl-8 pr-8 gap-5 grid lg:grid-cols-2 xl:grid-cols-3 font-poppins'>
+    <div className='w-full h-screen py-9 pr-8 pl-5 gap-5 grid lg:grid-cols-2 xl:grid-cols-3 font-poppins'>
       {/* Search bar & Group list */}
       <div className='h-full bg-white rounded-[20px] pt-5 shadow-[0px_4px_4px_0px_#00000040]'>
         <GroupList />

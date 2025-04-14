@@ -2,18 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from "react-icons/bs";
 import { MdBlock } from "react-icons/md";
 import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Skeleton from './Skeleton';
+import { msgInfo } from '../slices/msgSlice';
 
-const FriendList = () => {
+const FriendList = ({ optBtn, height, clickEvent }) => {
   const db = getDatabase();
+  const dispatch = useDispatch()
   const currentUserData = useSelector((state) => state.userInfo.value)
   const [friendList, setFriendList] = useState([])
   const [activeUserOptionIndex, setActiveUserOptionIndex] = useState(false)
   const [loading, setLoading] = useState(true)
   // const [activeUserOptions, setActiveUserOptions] = useState(false)
 
-
+  const handleFriendMsg = (msgUserInfo) => {
+    if (clickEvent) {
+      if (currentUserData.uid === msgUserInfo.senderID) {
+        dispatch(msgInfo({
+          userName: msgUserInfo.receiverName,
+          id: msgUserInfo.receiverID,
+          img: msgUserInfo.receiverImg
+        }))
+      } else {
+        dispatch(msgInfo({
+          userName: msgUserInfo.senderName,
+          id: msgUserInfo.senderID,
+          img: msgUserInfo.senderImg
+        }))
+      }
+    }
+  }
 
 
   const handleBlock = (targetedUserData) => {
@@ -76,7 +94,7 @@ const FriendList = () => {
         <BsThreeDots className='text-primary text-2xl' />
       </div>
 
-      <div className='h-82'>
+      <div className={height ? height : "h-82"}>
 
         {loading ?
 
@@ -89,7 +107,7 @@ const FriendList = () => {
             <ul className='mt-4 h-full overflow-auto  mr-3'>
               {/* Friend Item */}
               {friendList.map((item, index) => {
-                return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
+                return <li key={index} onClick={() => handleFriendMsg(item)} className='cursor-default flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
 
                   <div className='size-14 rounded-full overflow-hidden'>
                     {currentUserData.uid === item?.senderID ?
@@ -112,7 +130,7 @@ const FriendList = () => {
                       </div>
                     }
 
-                    <button className='cursor-pointer' onClick={() => setActiveUserOptionIndex(index)} >
+                    <button className={`cursor-pointer ${optBtn}`} onClick={() => setActiveUserOptionIndex(index)} >
                       <BsThreeDots className='text-lg' />
                     </button>
                     {activeUserOptionIndex === index &&
