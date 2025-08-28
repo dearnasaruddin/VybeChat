@@ -154,22 +154,22 @@ const Registration = () => {
     return (
         <div className="flex h-screen justify-center items-center bg-[#f1f1f1]">
         
-            <div className='h-200 w-320 flex justify-center items-center gap-x-20 bg-white pl-16 shadow-2xl'>
+            <div className='max-lg:px-4 max-lg:py-10 lg:h-200 lg:w-320 flex justify-center items-center lg:gap-x-20 bg-white lg:pl-16 shadow-2xl'>
                 <div className=" font-poppins">
-                    <h1 className='font-bold text-4xl text-[#11175D] whitespace-nowrap'>Get started with easily register</h1>
+                    <h1 className='font-bold text-4xl text-[#11175D] lg:whitespace-nowrap'>Get started with easily register</h1>
                     <p className='font-normal text-xl text-[#808080] mt-3 mb-10'>Free register and you enjoy it!</p>
-                    <div className={`flex flex-col ${nameError || emailError || passwordError ? "gap-2" : "gap-y-8"}`}>
+                    <div className={`flex flex-col ${nameError || emailError || passwordError ? "gap-2" : "gap-y-4 lg:gap-y-8"}`}>
 
                         {/* ========================== FullName, Email & Password Inputs ========================== */}
-                        <input ref={nameRef} onKeyUp={(e)=> e.key === "Enter" && emailRef.current.focus()} onChange={handleFullName} className={`py-6 px-8 text-xl border border-[#B8B9CE] rounded-lg ${nameError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type="text" name="fullName" placeholder='Full Name' />
+                        <input ref={nameRef} onKeyUp={(e)=> e.key === "Enter" && emailRef.current.focus()} onChange={handleFullName} className={`py-3 lg:py-6 px-3 lg:px-8 lg:text-xl border border-[#B8B9CE] rounded-lg ${nameError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type="text" name="fullName" placeholder='Full Name' />
                         {nameError && <p className='text-red-500'>{nameError}</p>}
 
-                        <input ref={emailRef} onKeyUp={(e)=> e.key === "Enter" && passwordRef.current.focus()} onChange={handleEmail} className={`py-6 px-8 text-xl border border-[#B8B9CE] rounded-lg ${emailError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type="email" name="email" placeholder='Email Address' />
+                        <input ref={emailRef} onKeyUp={(e)=> e.key === "Enter" && passwordRef.current.focus()} onChange={handleEmail} className={`py-3 lg:py-6 px-3 lg:px-8 lg:text-xl border border-[#B8B9CE] rounded-lg ${emailError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type="email" name="email" placeholder='Email Address' />
                         {emailError && <p className='text-red-500'>{emailError}</p>}
 
                         <div className='relative'>
-                            <input ref={passwordRef} onKeyUp={(e)=> e.key === "Enter" && handleSignup()} onChange={handlePassword} className={`w-full py-6 px-8 text-xl border border-[#B8B9CE] rounded-lg ${passwordError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type={passwordShown ? "text" : "password"} name="password" id="" placeholder='Password' />
-                            <span onClick={() => setPasswordShown(!passwordShown)} className='text-3xl absolute right-9 top-1/2 -translate-y-1/2 bg-white cursor-pointer' >
+                            <input ref={passwordRef} onKeyUp={(e)=> e.key === "Enter" && handleSignup()} onChange={handlePassword} className={`w-full py-3 lg:py-6 px-3 lg:px-8 lg:text-xl border border-[#B8B9CE] rounded-lg ${passwordError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type={passwordShown ? "text" : "password"} name="password" id="" placeholder='Password' />
+                            <span onClick={() => setPasswordShown(!passwordShown)} className='text-3xl absolute right-5 lg:right-9 top-1/2 -translate-y-1/2 bg-white cursor-pointer' >
                                 {passwordShown ? <FiEye /> : <FiEyeOff />}
                             </span>
                         </div>
@@ -178,10 +178,10 @@ const Registration = () => {
                     </div>
 
                     {/* ========================== Buttons ========================== */}
-                    <button onClick={handleSignup} className='font-semibold text-xl w-full py-5 rounded-[86px] text-white bg-primary cursor-pointer mt-12 mb-8' type="submit">Sign Up</button>
+                    <button onClick={handleSignup} className='font-semibold text-xl w-full py-3 lg:py-5 rounded-3xl lg:rounded-[86px] text-white bg-primary cursor-pointer mt-12 mb-8' type="submit">Sign Up</button>
                     <p className='font-normal text-sm text-center text-[#03014C]'>Already  have an account ? <Link to='/login' className='font-bold text-[#EA6C00]'>Log in</Link></p>
                 </div>
-                <div className='h-full w-full bg-[url(../src/assets/registrationImg.webp)] bg-no-repeat bg-cover bg-center'>
+                <div className='max-lg:hidden h-full w-full bg-[url(../src/assets/registrationImg.webp)] bg-no-repeat bg-cover bg-center'>
                 </div>
             </div>
         </div>

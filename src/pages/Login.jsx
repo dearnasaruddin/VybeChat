@@ -183,26 +183,47 @@ const Login = () => {
   return (
     <div className="flex h-screen justify-center items-center bg-[#f1f1f1]">
   
-      <div className='h-200 w-320 flex justify-center items-center gap-x-28 bg-white pl-28 shadow-2xl'>
+      <div className='lg:h-200 lg:w-320 lg:flex justify-center items-center lg:gap-x-28 bg-white lg:pl-28 shadow-2xl max-lg:py-10 max-lg:px-4'>
         <div className="font-poppins">
-          <h1 className='font-bold text-4xl text-[#11175D] whitespace-nowrap'>Log in to your account!</h1>
-          <p className='font-normal text-lg text-[#808080] mt-3 mb-10'>Log in to connect your friends and family</p>
-          <div className={`flex flex-col ${emailError || passwordError ? "gap-4" : "gap-y-8"}`}>
-            <input ref={emailRef} onKeyUp={(e) => e.key === "Enter" && passwordRef.current.focus()} onChange={handleEmail} className={`py-6 px-8 text-xl border border-[#B8B9CE] rounded-lg ${emailError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type="email" name="email" placeholder='Email Address' />
+          <h1 className='font-bold text-4xl text-[#11175D] lg:whitespace-nowrap'>Log in to your account!</h1>
+          <p className=' font-normal text-lg text-[#808080] mt-3 mb-10'>Log in to connect your friends and family</p>
+          <div className={`flex flex-col ${emailError || passwordError ? "gap-4" : "gap-y-4 lg:gap-y-8"}`}>
+
+            <input 
+            ref={emailRef}
+            onKeyUp={(e) => e.key === "Enter" && passwordRef.current.focus()}
+            onChange={handleEmail} 
+            className={`py-3 lg:py-6 px-3 lg:px-8 lg:text-xl border border-[#B8B9CE] rounded-lg ${emailError && "focus:border-red-500 focus:outline-none focus:border-2"}`} 
+            type="email" 
+            name="email" 
+            placeholder='Email Address' />
+
             {emailError && <p className='text-red-500'>{emailError}</p>}
+
             <div className='relative'>
-              <input ref={passwordRef} onKeyUp={(e) => e.key === "Enter" && handleLogin()} onChange={handlePassword} className={`w-full py-6 px-8 text-xl border border-[#B8B9CE] rounded-lg ${passwordError && "focus:border-red-500 focus:outline-none focus:border-2"}`} type={passwordShown ? "text" : "password"} name="password" placeholder='Password' />
-              <span onClick={() => setPasswordShown(!passwordShown)} className='text-3xl absolute right-9 top-1/2 -translate-y-1/2 bg-white cursor-pointer' >
+              <input 
+              ref={passwordRef} 
+              onKeyUp={(e) => e.key === "Enter" && handleLogin()} 
+              onChange={handlePassword} 
+              className={`w-full py-3 lg:py-6 px-3 lg:px-8 lg:text-xl border border-[#B8B9CE] rounded-lg ${passwordError && "focus:border-red-500 focus:outline-none focus:border-2"}`} 
+              type={passwordShown ? "text" : "password"} 
+              name="password" 
+              placeholder='Password' />
+
+              <span onClick={() => setPasswordShown(!passwordShown)} 
+              className='text-3xl absolute right-5 lg:right-9 top-1/2 -translate-y-1/2 bg-white cursor-pointer' >
                 {passwordShown ? <FiEye /> : <FiEyeOff />}
               </span>
+
             </div>
+
             {passwordError && <p className='text-red-500'>{passwordError}</p>}
           </div>
-          <button onClick={handleLogin} className='font-semibold text-xl w-full py-5 rounded-lg text-white bg-primary cursor-pointer mt-12 mb-6' type="submit">Log in</button>
-          <button onClick={handleGoogleLogin} className='font-semibold text-lg w-full py-4 rounded-lg border border-[#B8B9CE] cursor-pointer mb-6 flex justify-center items-center gap-x-3' type="submit"><FcGoogle className='text-3xl' /> Log in with Google</button>
+          <button onClick={handleLogin} className='font-semibold text-xl w-full py-3 lg:py-5 rounded-lg text-white bg-primary cursor-pointer mt-12 mb-3 lg:mb-6' type="submit">Log in</button>
+          <button onClick={handleGoogleLogin} className='font-semibold text-lg w-full py-3 lg:py-4 rounded-lg border border-[#B8B9CE] cursor-pointer mb-6 flex justify-center items-center gap-x-3' type="submit"><FcGoogle className='text-3xl' /> Log in with Google</button>
           <p className='font-normal text-sm text-center text-[#03014C]'>Haven't any account ? <Link to='/registration' className='font-bold text-[#EA6C00]'>Sign up</Link></p>
         </div>
-        <div className='h-full w-full bg-[url(../src/assets/loginImg.webp)] bg-no-repeat bg-cover bg-center'>
+        <div className='max-lg:hidden h-full w-full bg-[url(../src/assets/loginImg.webp)] bg-no-repeat bg-cover bg-center'>
         </div>
       </div>
     </div>

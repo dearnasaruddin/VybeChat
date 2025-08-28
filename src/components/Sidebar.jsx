@@ -67,12 +67,12 @@ const Sidebar = () => {
     return (
 
 
-        <div className='xl:h-screen py-9 pl-8'>
+        <div className='xl:h-screen lg:py-9 lg:pl-8 max-sm:fixed max-sm:bottom-0 max-sm:left-1/2 max-sm:-translate-x-1/2 z-50 max-sm:w-screen'>
 
             {/* <div className='h-full w-46 py-9.5 flex flex-col justify-between items-center text-white bg-primary rounded-[20px] font-poppins '> */}
-            <div className='h-full w-fit py-9.5 flex flex-col justify-between items-center text-white bg-primary rounded-[20px] font-poppins relative'>
+            <div className='lg:h-full max-sm:w-full lg:w-fit lg:py-9.5 flex lg:flex-col lg:justify-between lg:items-center text-white bg-primary lg:rounded-[20px] font-poppins relative'>
                 <div>
-                    <div>
+                    <div className='max-lg:hidden'>
                         <div className='size-14 xl:size-25 rounded-full overflow-hidden border-white border-4 mx-auto'>
                             <img src={userData?.photoURL && userData.photoURL} alt="profileImg" />
                         </div>
@@ -80,14 +80,14 @@ const Sidebar = () => {
                         <h2 className='text-center mt-2.5 text-lg'>{userData?.displayName}</h2>
 
                     </div>
-                    <ul className='text-4xl w-auto xl:w-[186px] flex flex-col justify-center items-center gap-y-3 mt-20'>
-                        <Link to="/" className={`cursor-pointer w-full h-20 place-content-center place-items-center ${location.pathname == "/" ? "activeMenu" : "hover:text-gray-400"}`}><SlHome /></Link>
-                        <Link to="/chat" className={`cursor-pointer w-full h-20 place-content-center place-items-center ${location.pathname == "/chat" ? "activeMenu" : "hover:text-gray-400"}`}><IoChatbubbleEllipsesOutline /></Link>
-                        <Link to="/notification" className={`cursor-pointer w-full h-20 place-content-center place-items-center ${location.pathname == "/notification" ? "activeMenu" : "hover:text-gray-400"}`}><IoMdNotificationsOutline className='text-[44px]' /></Link>
-                        <Link to="/settings" className={`cursor-pointer w-full h-20 place-content-center place-items-center ${location.pathname == "/settings" ? "activeMenu" : "hover:text-gray-400"}`}><SlSettings /></Link>
+                    <ul className='text-3xl lg:text-4xl max-sm:w-screen max-sm:px-5 max-sm:py-3 lg:w-auto xl:w-[186px] flex lg:flex-col justify-between lg:justify-center items-center lg:gap-y-3 lg:mt-20'>
+                        <Link to="/" className={`cursor-pointer lg:w-full lg:h-20 place-content-center place-items-center ${location.pathname == "/" ? "activeMenu" : "hover:text-gray-400"}`}><SlHome /></Link>
+                        <Link to="/chat" className={`cursor-pointer lg:w-full lg:h-20 place-content-center place-items-center ${location.pathname == "/chat" ? "activeMenu" : "hover:text-gray-400"}`}><IoChatbubbleEllipsesOutline /></Link>
+                        <Link to="/notification" className={`cursor-pointer lg:w-full lg:h-20 place-content-center place-items-center ${location.pathname == "/notification" ? "activeMenu" : "hover:text-gray-400"}`}><IoMdNotificationsOutline className='text-[38px] lg:text-[44px]' /></Link>
+                        <Link to="/settings" className={`cursor-pointer lg:w-full lg:h-20 place-content-center place-items-center ${location.pathname == "/settings" ? "activeMenu" : "hover:text-gray-400"}`}><SlSettings /></Link>
                     </ul>
                 </div>
-                <span >
+                <span className='hidden lg:block'>
                     <CiPower onClick={() => setActiveLogOutPopUp(true)} className='text-4xl hover:text-red-400 cursor-pointer' />
                 </span>
             </div>

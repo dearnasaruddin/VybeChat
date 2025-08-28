@@ -77,7 +77,7 @@ const Chat = () => {
 
     // <div className='w-full h-screen py-9 pr-8 gap-5 grid grid-cols-2 font-poppins'>
     <div className='w-full h-screen py-9 pr-8 gap-5 flex divide-x divide-gray-400 font-poppins'>
-      <div className='h-full flex flex-col gap-y-8 grow pr-5'>
+      <div className={`h-full ${msgInfo ? 'hidden' : 'flex'} flex-col gap-y-8 grow pr-5`}>
         <input type="text" className='border border-gray-400 px-5 py-3 text-xl rounded-2xl mx-4' placeholder='Search by Name' />
         <FriendList height={"h-[50vh]"} clickEvent={true} optBtn={"hidden"} />
         <MyGroups height={"h-[20vh]"} createGroupBtn={"hidden"} optBtn={"hidden"} />
@@ -132,7 +132,7 @@ const Chat = () => {
             <div className='flex items-center gap-x-3 relative'>
               {emojiModal && <div className='absolute z-10 bottom-16 right-14'><EmojiPicker emojiStyle="facebook" onEmojiClick={handleEmoji} /></div>}
               <div className='grow relative'>
-                <input onChange={handleMsgInput} onKeyUp={(e)=>e.key == "Enter" && handleSendMsg()} ref={msgRef} value={msg} type="text" className={`w-full border border-gray-400 rounded-2xl pl-5 pr-14 py-3 text-xl ${msgError && "border-red-400 outline-none border-2"}`} placeholder='Write your text' />
+                <input onChange={handleMsgInput} onKeyUp={(e) => e.key == "Enter" && handleSendMsg()} ref={msgRef} value={msg} type="text" className={`w-full border border-gray-400 rounded-2xl pl-5 pr-14 py-3 text-xl ${msgError && "border-red-400 outline-none border-2"}`} placeholder='Write your text' />
                 <span onClick={() => setEmojiModal(!emojiModal)} className='absolute text-4xl text-primary bg-white right-3 top-1/2 -translate-y-1/2 cursor-pointer'>
                   {
                     emojiModal ?
