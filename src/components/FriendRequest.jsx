@@ -66,16 +66,16 @@ const FriendRequest = () => {
               {friendRequestList.map((item, index) => {
                 return <li key={index} className='flex gap-2.5 items-center py-4 border-b border-[#00000025] hover:bg-gray-200 pr-4 pl-6'>
 
-                  <div className='size-14 rounded-full overflow-hidden'>
+                  <div className='size-18 lg:size-14 rounded-full overflow-hidden'>
                     <img src={item.senderImg} alt="profileImg" />
                   </div>
 
-                  <div className='grow flex justify-between items-center'>
+                  <div className='grow max-lg:space-y-1 lg:flex justify-between items-center'>
                     <div><h4 className='font-semibold text-sm'>{item.senderName}</h4>
                       <p className='font-medium text-xs text-[#4D4D4D75]'>{item.senderEmail}</p>
                     </div>
                     <div>
-                      <button onClick={() => handleAcceptRequest(item)} type="button" className='font-medium bg-primary text-white px-3 py-1 rounded-md cursor-pointer'>Accept</button>
+                      <button onClick={() => handleAcceptRequest(item)} type="button" className='font-medium bg-primary text-white px-3 py-1 rounded-md cursor-pointer'>Confirm</button>
                       <button onClick={() => handleDeleteRequest(item)} type="button" className='font-medium bg-gray-400 text-white px-3 py-1 rounded-md ml-3 cursor-pointer'>Delete</button>
                     </div>
                   </div>

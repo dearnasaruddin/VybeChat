@@ -67,7 +67,7 @@ const Sidebar = () => {
     return (
 
 
-        <div className='xl:h-screen lg:py-9 lg:pl-8 max-sm:fixed max-sm:bottom-0 max-sm:left-1/2 max-sm:-translate-x-1/2 z-50 max-sm:w-screen'>
+        <div className='xl:h-screen lg:py-9 lg:pl-8 max-sm:fixed max-sm:top-0 max-sm:left-1/2 max-sm:-translate-x-1/2 z-50 max-sm:w-screen'>
 
             {/* <div className='h-full w-46 py-9.5 flex flex-col justify-between items-center text-white bg-primary rounded-[20px] font-poppins '> */}
             <div className='lg:h-full max-sm:w-full lg:w-fit lg:py-9.5 flex lg:flex-col lg:justify-between lg:items-center text-white bg-primary lg:rounded-[20px] font-poppins relative'>
